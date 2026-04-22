@@ -1,8 +1,33 @@
 import { useState } from "react";
 
+const PAISES = [
+  { codigo: "+57", nombre: "🇨🇴 Colombia" },
+  { codigo: "+1", nombre: "🇺🇸 Estados Unidos" },
+  { codigo: "+52", nombre: "🇲🇽 México" },
+  { codigo: "+54", nombre: "🇦🇷 Argentina" },
+  { codigo: "+56", nombre: "🇨🇱 Chile" },
+  { codigo: "+51", nombre: "🇵🇪 Perú" },
+  { codigo: "+58", nombre: "🇻🇪 Venezuela" },
+  { codigo: "+593", nombre: "🇪🇨 Ecuador" },
+  { codigo: "+502", nombre: "🇬🇹 Guatemala" },
+  { codigo: "+503", nombre: "🇸🇻 El Salvador" },
+  { codigo: "+504", nombre: "🇭🇳 Honduras" },
+  { codigo: "+505", nombre: "🇳🇮 Nicaragua" },
+  { codigo: "+506", nombre: "🇨🇷 Costa Rica" },
+  { codigo: "+507", nombre: "🇵🇦 Panamá" },
+  { codigo: "+53", nombre: "🇨🇺 Cuba" },
+  { codigo: "+1-809", nombre: "🇩🇴 Rep. Dominicana" },
+  { codigo: "+595", nombre: "🇵🇾 Paraguay" },
+  { codigo: "+598", nombre: "🇺🇾 Uruguay" },
+  { codigo: "+591", nombre: "🇧🇴 Bolivia" },
+  { codigo: "+34", nombre: "🇪🇸 España" },
+  { codigo: "+55", nombre: "🇧🇷 Brasil" },
+];
+
 export default function Home() {
   const [step, setStep] = useState(1);
   const [lead, setLead] = useState({ nombre: "", email: "", whatsapp: "" });
+  const [codigoPais, setCodigoPais] = useState("+57");
   const [url, setUrl] = useState("");
   const [loading, setLoading] = useState(false);
   const [enviando, setEnviando] = useState(false);
@@ -18,7 +43,11 @@ export default function Home() {
       await fetch(MAKE_WEBHOOK, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ nombre: lead.nombre, email: lead.email, whatsapp: lead.whatsapp }),
+        body: JSON.stringify({
+          nombre: lead.nombre,
+          email: lead.email,
+          whatsapp: `${codigoPais} ${lead.whatsapp}`,
+        }),
       });
     } catch (e) {
       console.log("Webhook error:", e);
@@ -49,6 +78,13 @@ export default function Home() {
     }
   };
 
+  const labelStyle = {
+    display: "block",
+    fontSize: "14px",
+    color: "#aaa",
+    marginBottom: "6px",
+  };
+
   const inputStyle = {
     width: "100%",
     padding: "16px 20px",
@@ -60,13 +96,6 @@ export default function Home() {
     outline: "none",
     boxSizing: "border-box",
     marginBottom: "16px",
-  };
-
-  const labelStyle = {
-    display: "block",
-    fontSize: "14px",
-    color: "#aaa",
-    marginBottom: "6px",
   };
 
   return (
@@ -83,7 +112,7 @@ export default function Home() {
 
       <div style={{ maxWidth: "600px", margin: "60px auto", padding: "0 20px" }}>
 
-        {/* ─── PASO 1: Formulario de datos ─── */}
+        {/* ─── PASO 1: Formulario ─── */}
         {step === 1 && (
           <>
             <div style={{ fontSize: "13px", color: "#FF0164", fontWeight: "bold", letterSpacing: "2px", marginBottom: "12px" }}>
@@ -115,13 +144,45 @@ export default function Home() {
             />
 
             <label style={labelStyle}>WhatsApp *</label>
-            <input
-              type="text"
-              placeholder="+57 300 000 0000"
-              value={lead.whatsapp}
-              onChange={(e) => setLead({ ...lead, whatsapp: e.target.value })}
-              style={inputStyle}
-            />
+            <div style={{ display: "flex", gap: "8px", marginBottom: "16px" }}>
+              <select
+                value={codigoPais}
+                onChange={(e) => setCodigoPais(e.target.value)}
+                style={{
+                  padding: "16px 12px",
+                  borderRadius: "10px",
+                  border: "2px solid #333",
+                  background: "#1a1a1a",
+                  color: "#fff",
+                  fontSize: "15px",
+                  outline: "none",
+                  cursor: "pointer",
+                  minWidth: "180px",
+                }}
+              >
+                {PAISES.map((p) => (
+                  <option key={p.codigo} value={p.codigo}>
+                    {p.nombre} ({p.codigo})
+                  </option>
+                ))}
+              </select>
+              <input
+                type="tel"
+                placeholder="300 000 0000"
+                value={lead.whatsapp}
+                onChange={(e) => setLead({ ...lead, whatsapp: e.target.value })}
+                style={{
+                  flex: 1,
+                  padding: "16px 20px",
+                  borderRadius: "10px",
+                  border: "2px solid #333",
+                  background: "#1a1a1a",
+                  color: "#fff",
+                  fontSize: "16px",
+                  outline: "none",
+                }}
+              />
+            </div>
 
             <button
               onClick={handleLead}
