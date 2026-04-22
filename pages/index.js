@@ -76,8 +76,8 @@ export default function Home() {
       <div style={{ background: "#1a1a1a", borderBottom: "3px solid #FF0164", padding: "20px 40px", display: "flex", alignItems: "center", gap: "16px" }}>
         <img src="/logo.png" alt="WA Digital" style={{ height: "40px", width: "auto", objectFit: "contain" }} />
         <div>
-          <div style={{ fontWeight: "bold", fontSize: "18px" }}>Auditor de Tienda</div>
-          <div style={{ fontSize: "12px", color: "#888" }}>Funnel Day by WA Digital</div>
+          <div style={{ fontWeight: "bold", fontSize: "18px" }}>AuditAI</div>
+          <div style={{ fontSize: "12px", color: "#888" }}>by WA Digital</div>
         </div>
       </div>
 
