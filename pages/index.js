@@ -98,19 +98,139 @@ export default function Home() {
     marginBottom: "16px",
   };
 
+  const formularioListo = lead.nombre && lead.email && lead.whatsapp;
+
   return (
     <div style={{ minHeight: "100vh", background: "#0f0f0f", color: "#fff", fontFamily: "Arial, sans-serif" }}>
 
+      {/* Responsive styles */}
+      <style>{`
+        * { box-sizing: border-box; }
+        
+        .header {
+          background: #1a1a1a;
+          border-bottom: 3px solid #FF0164;
+          padding: 16px 20px;
+          display: flex;
+          align-items: center;
+          gap: 12px;
+        }
+
+        .contenido {
+          max-width: 600px;
+          margin: 0 auto;
+          padding: 40px 20px 60px 20px;
+        }
+
+        .titulo {
+          font-size: 28px;
+          font-weight: bold;
+          margin-bottom: 8px;
+          line-height: 1.2;
+        }
+
+        .whatsapp-row {
+          display: flex;
+          gap: 8px;
+          margin-bottom: 16px;
+        }
+
+        .select-pais {
+          padding: 16px 10px;
+          border-radius: 10px;
+          border: 2px solid #333;
+          background: #1a1a1a;
+          color: #fff;
+          font-size: 15px;
+          outline: none;
+          cursor: pointer;
+          width: 140px;
+          flex-shrink: 0;
+        }
+
+        .input-telefono {
+          flex: 1;
+          min-width: 0;
+          padding: 16px 16px;
+          border-radius: 10px;
+          border: 2px solid #333;
+          background: #1a1a1a;
+          color: #fff;
+          font-size: 16px;
+          outline: none;
+          width: 100%;
+        }
+
+        .btn-principal {
+          width: 100%;
+          padding: 18px;
+          background: #FF0164;
+          color: #fff;
+          border: none;
+          border-radius: 10px;
+          font-size: 17px;
+          font-weight: bold;
+          cursor: pointer;
+          margin-top: 8px;
+          opacity: 1;
+          transition: opacity 0.2s;
+        }
+
+        .btn-principal:disabled {
+          opacity: 0.45;
+          cursor: not-allowed;
+        }
+
+        .url-row {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+          margin-bottom: 40px;
+        }
+
+        .btn-auditar {
+          padding: 16px 32px;
+          background: #FF0164;
+          color: #fff;
+          border: none;
+          border-radius: 10px;
+          font-size: 16px;
+          font-weight: bold;
+          cursor: pointer;
+          width: 100%;
+        }
+
+        .btn-auditar:disabled {
+          background: #555;
+          cursor: not-allowed;
+        }
+
+        @media (min-width: 480px) {
+          .titulo {
+            font-size: 32px;
+          }
+          .select-pais {
+            width: 180px;
+          }
+          .url-row {
+            flex-direction: row;
+          }
+          .btn-auditar {
+            width: auto;
+          }
+        }
+      `}</style>
+
       {/* Header */}
-      <div style={{ background: "#1a1a1a", borderBottom: "3px solid #FF0164", padding: "20px 40px", display: "flex", alignItems: "center", gap: "16px" }}>
-        <img src="/logo.png" alt="WA Digital" style={{ height: "40px", width: "auto", objectFit: "contain" }} />
+      <div className="header">
+        <img src="/logo.png" alt="WA Digital" style={{ height: "38px", width: "auto", objectFit: "contain" }} />
         <div>
           <div style={{ fontWeight: "bold", fontSize: "18px" }}>AuditAI</div>
           <div style={{ fontSize: "12px", color: "#888" }}>by WA Digital</div>
         </div>
       </div>
 
-      <div style={{ maxWidth: "600px", margin: "60px auto", padding: "0 20px" }}>
+      <div className="contenido">
 
         {/* ─── PASO 1: Formulario ─── */}
         {step === 1 && (
@@ -118,10 +238,10 @@ export default function Home() {
             <div style={{ fontSize: "13px", color: "#FF0164", fontWeight: "bold", letterSpacing: "2px", marginBottom: "12px" }}>
               ANTES DE EMPEZAR
             </div>
-            <h1 style={{ fontSize: "32px", fontWeight: "bold", marginBottom: "8px" }}>
+            <h1 className="titulo">
               ¿A quién le preparamos el diagnóstico?
             </h1>
-            <p style={{ color: "#888", marginBottom: "40px", fontSize: "16px" }}>
+            <p style={{ color: "#888", marginBottom: "40px", fontSize: "16px", lineHeight: "1.5" }}>
               Déjanos tus datos y en 2 minutos tienes tu análisis completo personalizado.
             </p>
 
@@ -144,21 +264,11 @@ export default function Home() {
             />
 
             <label style={labelStyle}>WhatsApp *</label>
-            <div style={{ display: "flex", gap: "8px", marginBottom: "16px" }}>
+            <div className="whatsapp-row">
               <select
                 value={codigoPais}
                 onChange={(e) => setCodigoPais(e.target.value)}
-                style={{
-                  padding: "16px 12px",
-                  borderRadius: "10px",
-                  border: "2px solid #333",
-                  background: "#1a1a1a",
-                  color: "#fff",
-                  fontSize: "15px",
-                  outline: "none",
-                  cursor: "pointer",
-                  minWidth: "180px",
-                }}
+                className="select-pais"
               >
                 {PAISES.map((p) => (
                   <option key={p.codigo} value={p.codigo}>
@@ -171,34 +281,14 @@ export default function Home() {
                 placeholder="300 000 0000"
                 value={lead.whatsapp}
                 onChange={(e) => setLead({ ...lead, whatsapp: e.target.value })}
-                style={{
-                  flex: 1,
-                  padding: "16px 20px",
-                  borderRadius: "10px",
-                  border: "2px solid #333",
-                  background: "#1a1a1a",
-                  color: "#fff",
-                  fontSize: "16px",
-                  outline: "none",
-                }}
+                className="input-telefono"
               />
             </div>
 
             <button
               onClick={handleLead}
-              disabled={enviando || !lead.nombre || !lead.email || !lead.whatsapp}
-              style={{
-                width: "100%",
-                padding: "18px",
-                background: (enviando || !lead.nombre || !lead.email || !lead.whatsapp) ? "#555" : "#FF0164",
-                color: "#fff",
-                border: "none",
-                borderRadius: "10px",
-                fontSize: "17px",
-                fontWeight: "bold",
-                cursor: "pointer",
-                marginTop: "8px",
-              }}
+              disabled={enviando || !formularioListo}
+              className="btn-principal"
             >
               {enviando ? "Guardando..." : "Empezar mi diagnóstico →"}
             </button>
@@ -212,27 +302,27 @@ export default function Home() {
         {/* ─── PASO 2: Auditoría ─── */}
         {step === 2 && (
           <>
-            <h1 style={{ fontSize: "32px", fontWeight: "bold", marginBottom: "8px" }}>
+            <h1 className="titulo">
               Audita tu tienda en <span style={{ color: "#FF0164" }}>30 segundos</span>
             </h1>
-            <p style={{ color: "#888", marginBottom: "40px", fontSize: "16px" }}>
+            <p style={{ color: "#888", marginBottom: "40px", fontSize: "16px", lineHeight: "1.5" }}>
               Pegá la URL de tu tienda y te decimos exactamente qué está frenando tus ventas.
             </p>
 
-            <div style={{ display: "flex", gap: "12px", marginBottom: "40px" }}>
+            <div className="url-row">
               <input
                 type="text"
                 placeholder="https://tutienda.com"
                 value={url}
                 onChange={(e) => setUrl(e.target.value)}
-                style={{ flex: 1, padding: "16px 20px", borderRadius: "10px", border: "2px solid #333", background: "#1a1a1a", color: "#fff", fontSize: "16px", outline: "none" }}
+                style={{ flex: 1, padding: "16px 20px", borderRadius: "10px", border: "2px solid #333", background: "#1a1a1a", color: "#fff", fontSize: "16px", outline: "none", width: "100%" }}
               />
               <button
                 onClick={auditar}
-                disabled={loading}
-                style={{ padding: "16px 32px", background: loading ? "#555" : "#FF0164", color: "#fff", border: "none", borderRadius: "10px", fontSize: "16px", fontWeight: "bold", cursor: loading ? "not-allowed" : "pointer" }}
+                disabled={loading || !url}
+                className="btn-auditar"
               >
-                {loading ? "Analizando..." : "Auditar"}
+                {loading ? "Analizando..." : "Auditar →"}
               </button>
             </div>
 
@@ -251,9 +341,9 @@ export default function Home() {
             )}
 
             {reporte && (
-              <div style={{ background: "#1a1a1a", borderRadius: "16px", padding: "32px", border: "1px solid #333" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "24px", borderBottom: "2px solid #FF0164", paddingBottom: "12px" }}>
-                  <h2 style={{ fontSize: "22px", fontWeight: "bold", margin: 0 }}>📊 Reporte de Auditoría</h2>
+              <div style={{ background: "#1a1a1a", borderRadius: "16px", padding: "24px", border: "1px solid #333" }}>
+                <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "center", marginBottom: "24px", borderBottom: "2px solid #FF0164", paddingBottom: "12px", gap: "12px" }}>
+                  <h2 style={{ fontSize: "20px", fontWeight: "bold", margin: 0 }}>📊 Reporte de Auditoría</h2>
                   <button
                     onClick={() => { navigator.clipboard.writeText(reporte); alert("✅ Reporte copiado al portapapeles"); }}
                     style={{ padding: "10px 20px", background: "#FF8C00", color: "#fff", border: "none", borderRadius: "8px", fontSize: "14px", fontWeight: "bold", cursor: "pointer" }}
